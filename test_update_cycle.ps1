@@ -1,46 +1,43 @@
 # DISCLAIMER:
-# This script automatically creates files on your system, related to the example
-# "my_app", and deletes them afterwards. Confirmation is requested before deleting.
-# Use at your own risk.
+# 本脚本会自动在您的系统中创建与示例 "my_app" 相关的文件，并在之后删除它们。删除前会请求确认。
+# 使用风险由用户承担。
 #
-# This script executes the steps from the README, both for the repo-side and the
-# client-side. This is basically the same as the test-update-cycle.yml github workflow,
-# except you run this on your local development system, for convenient manual testing.
+# 本脚本执行 README 中的步骤，涵盖仓库端和客户端的操作。
+# 其功能与 GitHub workflow 中的 test-update-cycle.yml 基本相同，只不过这是在本地开发环境中手动测试更方便。
 #
-# - initialize a new example repository in a .\temp_my_app dir (including dummy keystore)
-# - create my_app v1.0 bundle using pyinstaller
-# - add my_app v1.0 to tufup repository
-# - install my_app v1.0 in <localappdata>\Programs\my_app with data in <localappdata>\my_app
-# - mock develop my_app v2.0
-# - create my_app v2.0 bundle using pyinstaller
-# - add my_app v2.0 to tufup repository
-# - run update server and update my_app from v1 to v2
+# - 初始化一个新的示例仓库到 .\temp_my_app 目录（包含虚拟密钥库）
+# - 使用 pyinstaller 创建 my_app v1.0 版本的捆绑包
+# - 将 my_app v1.0 添加到 tufup 仓库
+# - 在 <localappdata>\Programs\my_app 安装 my_app v1.0，数据存储在 <localappdata>\my_app
+# - 模拟开发 my_app v2.0
+# - 使用 pyinstaller 创建 my_app v2.0 版本的捆绑包
+# - 将 my_app v2.0 添加到 tufup 仓库
+# - 启动更新服务器，并将 my_app 从 v1 更新到 v2
 #
-# if the script won't execute, run the following command:
+# 如果脚本无法执行，运行以下命令：
 #   `Set-ExecutionPolicy AllSigned`
-# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts
+# 参考: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts
 #
-# note we could simply run this script in the github workflow,
-# but workflow failures are easier to debug when broken down into
-# separate steps
+# 需要注意的是，我们可以直接在 GitHub workflow 中运行此脚本，但将工作流拆分成独立步骤便于调试失败。
 
-# exit on cmdlet errors
+
+# 如果命令行有错误，立即退出
 $ErrorActionPreference = "stop"
 
-# exit on executable errors (for use directly after executable call)
+# 可执行文件出错时退出（用于可执行文件调用之后）
 function Assert-ExeSuccess {
     if (!$?) {
-        # note $? contains the execution status of the last command (true if successful)
+        # $? 包含上次命令的执行状态（成功则为 true）
         Write-Error "failed"
     }
 }
 
-# variables
+
+# 变量
 $app_name = "my_app"
 $enable_patch_update = $true
 
-# directories where this script creates files and deletes files (note these must end
-# with $app_name and must be consistent with myapp.settings and repo_settings)
+# 本脚本创建并删除的目录（注意必须以 $app_name 结尾，且与 myapp.settings 和 repo_settings 保持一致）
 $repo_dir = $PSScriptRoot
 $temp_dir = "$repo_dir\temp_$app_name"
 $app_install_dir = "$env:LOCALAPPDATA\Programs\$app_name"
@@ -48,144 +45,148 @@ $app_data_dir = "$env:LOCALAPPDATA\$app_name"
 $targets_dir = "$app_data_dir\update_cache\targets"
 $all_app_dirs = @($temp_dir, $app_install_dir, $app_data_dir)
 
+# 删除 *my_app 目录，需要确认
 function Remove-MyAppDirectory {
-    # remove a *my_app directory after confirmation
     param($Path)
     if ( $Path -match "$app_name$" ) {
         if (Test-Path $Path) {
-            # I think recurse can be used here, despite "known issues"...
+            # 递归删除该目录，并请求确认
             Remove-Item $Path -Recurse -Confirm
         } else {
-            Write-Host "path does not exist: $Path" -ForegroundColor yellow
+            Write-Host "路径不存在: $Path" -ForegroundColor yellow
         }
     } else {
-        Write-Host "$app_name not in path: $Path" -ForegroundColor yellow
+        Write-Host "$app_name 未包含在路径中: $Path" -ForegroundColor yellow
     }
 }
 
+# 删除 my_app 相关的所有目录
 function Remove-MyApp {
     $all_app_dirs | ForEach-Object { Remove-MyAppDirectory $_ }
 }
 
+
+# 调用 PyInstaller 创建应用程序包
 function Invoke-PyInstaller {
     pyinstaller.exe "$repo_dir\main.spec" --clean -y --distpath "$temp_dir\dist" --workpath "$temp_dir\build"
     Assert-ExeSuccess
 }
 
-# remove leftover directories and files, if any
+
+# 删除所有残留目录和文件
 Remove-MyApp
 
-# create directories if they do not exist yet
+# 如果目录不存在，则创建新目录
 $all_app_dirs | ForEach-Object {
     if (!(Test-Path $_)) {
         New-Item -Path $_ -ItemType "directory" | Out-Null
-        Write-Host "directory created: $_" -ForegroundColor green
+        Write-Host "创建目录: $_" -ForegroundColor green
     }
 }
 New-Item -Path $targets_dir -ItemType "directory" -Force | Out-Null
 
-# this script requires an active python environment, with tufup installed
-# (we'll assume there's a venv in the repo_dir)
+# 本脚本需要一个已激活的 Python 环境，并且已安装 tufup（假设在 repo_dir 中有一个虚拟环境）
 $venv_path = "$repo_dir\venv\Scripts\activate.ps1"
 if (Test-Path $venv_path) {
     & $venv_path
-    Write-Host "venv activated" -ForegroundColor green
+    Write-Host "虚拟环境已激活" -ForegroundColor green
 } else {
-    Write-Host "venv not found" -ForegroundColor red
+    Write-Host "未找到虚拟环境" -ForegroundColor red
 }
 
-# make sure python can find myapp
+# 确保 Python 可以找到 myapp
 $Env:PYTHONPATH += ";$repo_dir\src"
 
-# - initialize new repository
-Write-Host "initializing tuf repository for $app_name" -ForegroundColor green
+# 初始化新仓库
+Write-Host "为 $app_name 初始化 TUF 仓库" -ForegroundColor green
 python "$repo_dir\repo_init.py"
 Assert-ExeSuccess
 
-# - create my_app v1.0 bundle using pyinstaller
-Write-Host "creating $app_name v1.0 bundle" -ForegroundColor green
+# 使用 PyInstaller 创建 my_app v1.0 版本
+Write-Host "创建 $app_name v1.0 版本的捆绑包" -ForegroundColor green
 Invoke-PyInstaller
 
-# - add my_app v1.0 to tufup repository
-Write-Host "adding $app_name v1.0 bundle to repo" -ForegroundColor green
+# 将 my_app v1.0 添加到 tufup 仓库
+Write-Host "将 $app_name v1.0 添加到仓库" -ForegroundColor green
 python "$repo_dir\repo_add_bundle.py"
 Assert-ExeSuccess
 
-# - mock install my_app v1.0
-Write-Host "installing $app_name v1.0 in $app_install_dir" -ForegroundColor green
+
+# 模拟安装 my_app v1.0
+Write-Host "在 $app_install_dir 安装 $app_name v1.0" -ForegroundColor green
 $myapp_v1_archive = "$temp_dir\repository\targets\$app_name-1.0.tar.gz"
 tar -xf $myapp_v1_archive --directory=$app_install_dir
-# put a copy of the archive in the targets dir, to enable patch updates
+
+# 为启用补丁更新，将存档复制到目标目录
 if ($enable_patch_update) {
-    Write-Host "enabling patch update" -ForegroundColor green
+    Write-Host "启用补丁更新" -ForegroundColor green
     Copy-Item $myapp_v1_archive -Destination $targets_dir
 }
 
-# - mock develop my_app v2.0
-# (quick and dirty, this modifies the actual source,
-# but the change is rolled back later...)
-Write-Host "bumping $app_name version to v2.0 (temporary)" -ForegroundColor green
+# 模拟开发 my_app v2.0（修改源代码版本号）
+Write-Host "将 $app_name 版本临时提升至 v2.0" -ForegroundColor green
 $settings_path = "$repo_dir\src\myapp\settings.py"
 (Get-Content $settings_path).Replace("1.0", "2.0") | Set-Content $settings_path
 
-# - create my_app v2.0 bundle using pyinstaller
-Write-Host "creating $app_name v2.0 bundle" -ForegroundColor green
+# 使用 PyInstaller 创建 my_app v2.0 版本
+Write-Host "创建 $app_name v2.0 版本的捆绑包" -ForegroundColor green
 Invoke-PyInstaller
 
-# - add my_app v2.0 to tufup repository
-Write-Host "adding $app_name v2.0 bundle to repo" -ForegroundColor green
+# 将 my_app v2.0 添加到 tufup 仓库
+Write-Host "将 $app_name v2.0 添加到仓库" -ForegroundColor green
 python "$repo_dir\repo_add_bundle.py"
 Assert-ExeSuccess
 
-# - roll-back modified source
-Write-Host "rolling back temporary source modification" -ForegroundColor green
+# 回滚源代码的临时修改
+Write-Host "回滚源代码的临时修改" -ForegroundColor green
 (Get-Content $settings_path).Replace("2.0", "1.0") | Set-Content $settings_path
 
-# - start update server
-Write-Host "starting update server" -ForegroundColor green
+# 启动更新服务器
+Write-Host "启动更新服务器" -ForegroundColor green
 $job = Start-Job -ArgumentList @("$temp_dir\repository") -ScriptBlock {
     param($repository_path)
     python -m http.server -d $repository_path
     Assert-ExeSuccess
 }
-sleep 1  # not sure if this is required, but cannot hurt
+sleep 1  # 稍作等待，以确保服务器启动成功
 
-# - run my_app to update from v1 to v2
-Write-Host "running $app_name for update..." -ForegroundColor green
+# 运行 my_app 执行更新（从 v1 更新到 v2）
+Write-Host "运行 $app_name 以进行更新..." -ForegroundColor green
 & "$app_install_dir\main.exe"
 Assert-ExeSuccess
 
-# - run my_app again to verify we now have v2.0
-Write-Host "hit enter to proceed, after console has closed:"  -ForegroundColor yellow -NoNewLine
-Read-Host  # no text: we use write host to add color
-Write-Host "running $app_name again to verify version" -ForegroundColor green
+# 再次运行 my_app 确认已更新到 v2.0
+Write-Host "更新完成后按回车键继续:"  -ForegroundColor yellow -NoNewLine
+Read-Host  # 不显示输入内容
+Write-Host "再次运行 $app_name 以确认版本" -ForegroundColor green
 $output = & "$app_install_dir\main.exe"
 Assert-ExeSuccess
 
-# - stop update server
-Write-Host "stopping server" -ForegroundColor green
+# 停止更新服务器
+Write-Host "停止服务器" -ForegroundColor green
 $job | Stop-Job
 
-# - test output
+# 测试输出结果
 $pattern = "$app_name 2.0"
 if ( $output -match $pattern ) {
-  Write-Host "`nSUCCESS: $pattern found" -ForegroundColor green
+  Write-Host "`n成功: 找到 $pattern" -ForegroundColor green
 } else {
-  Write-Host "`nFAIL: $pattern not found in:`n$output" -ForegroundColor red
+  Write-Host "`n失败: 未找到 $pattern，输出为:`n$output" -ForegroundColor red
   exit 1
 }
 
-# reminder to clean up
+# 提醒用户清理残留文件
 $remaining = 0
 $all_app_dirs | ForEach-Object {
     if (Test-Path $_) {
-        Write-Host "$app_name files remain in: $_" -ForegroundColor yellow
+        Write-Host "$app_name 的文件残留在: $_" -ForegroundColor yellow
         $remaining += 1
     }
 }
 if ($remaining) {
-    Write-Host "Would you like to remove these directories?" -ForegroundColor yellow
+    Write-Host "是否要删除这些目录?" -ForegroundColor yellow
     if ((Read-Host "[y]/n") -in "", "y") {
         Remove-MyApp
     }
 }
+
