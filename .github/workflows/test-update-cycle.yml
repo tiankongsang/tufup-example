@@ -1,7 +1,9 @@
-# This workflow will install Python dependencies, lint with a variety of Python versions
-# Based on github's default "Python package" workflow.
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-# And https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#using-ruff-to-lint-code
+# 这个工作流将安装 Python 依赖项，并在多种 Python 版本上进行代码检查和测试
+# 基于 GitHub 的默认 "Python package" 工作流。
+# 更多信息见链接：
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# 以及如何使用 ruff 进行代码检查：
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#using-ruff-to-lint-code
 
 name: Test update cycle
 
@@ -11,18 +13,19 @@ jobs:
   build:
 
     strategy:
-      fail-fast: false
+      fail-fast: false  # 允许所有测试版本运行，即使其中一个失败
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest]  # 测试操作系统包括 macOS 和 Windows
         # for supported versions see https://devguide.python.org/versions/
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}  # 基于策略矩阵设置运行环境
 
     defaults:
       run:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
-        shell: pwsh  # use PowerShell Core, also on macOS
+        # 使用 PowerShell Core（macOS 和 Windows 均使用）
+        shell: pwsh  # 也可以在 macOS 上使用 PowerShell Core
 
     steps:
     - uses: actions/checkout@v4
@@ -43,18 +46,18 @@ jobs:
     - name: specify app directories for Windows
       if: runner.os == 'Windows'
       run: |
-        # make directories accessible as environment variables in subsequent steps
+        # 将目录添加为环境变量，以便后续步骤可以访问
         Add-Content -Path $Env:GITHUB_ENV -Value "MYAPP_INSTALL_DIR=$env:LOCALAPPDATA/Programs/my_app"
         Add-Content -Path $Env:GITHUB_ENV -Value "MYAPP_TARGETS_DIR=$env:LOCALAPPDATA/my_app/update_cache/targets"
-        # add src directory to python path
+        # 将 src 目录添加到 python path
         Add-Content -Path $Env:GITHUB_ENV -Value "PYTHONPATH=$Env:PYTHONPATH;./src"
     - name: specify app directories for macOS
       if: runner.os == 'macOS'
       run: |
-        # make directories accessible as environment variables in subsequent steps
+        # 将目录添加为环境变量，以便后续步骤可以访问
         Add-Content -Path $Env:GITHUB_ENV -Value "MYAPP_INSTALL_DIR=$HOME/Applications/my_app"
         Add-Content -Path $Env:GITHUB_ENV -Value "MYAPP_TARGETS_DIR=$HOME/Library/my_app/update_cache/targets"
-        # add src directory to python path
+        # 将 src 目录添加到 python path
         Add-Content -Path $Env:GITHUB_ENV -Value "PYTHONPATH=$Env:PYTHONPATH:./src"
     - name: initialize tufup repository
       run: python repo_init.py
@@ -65,11 +68,11 @@ jobs:
     - name: mock install my_app v1.0
       run: |
         $myapp_v1_archive = "./temp_my_app/repository/targets/my_app-1.0.tar.gz"
-        # create install dir and extract archive into it
+        # 创建安装目录并将压缩包解压到其中
         New-Item -Path $Env:MYAPP_INSTALL_DIR -ItemType "directory"
         tar -xf $myapp_v1_archive --directory=$Env:MYAPP_INSTALL_DIR
         dir $Env:MYAPP_INSTALL_DIR
-        # create targets dir and copy the archive into it (this enables patch updates)
+        # 创建目标目录并将压缩包复制到该目录，以启用补丁更新
         New-Item -Path $Env:MYAPP_TARGETS_DIR -ItemType "directory" -Force
         Copy-Item $myapp_v1_archive -Destination $Env:MYAPP_TARGETS_DIR
     - name: mock develop my_app v2.0
@@ -77,10 +80,10 @@ jobs:
       run: |
         import pathlib
         settings_path = pathlib.Path('./src/myapp/settings.py')
-        settings_text = settings_path.read_text().replace('1.0', '2.0')
+        settings_text = settings_path.read_text().replace('1.0', '2.0')  # 将版本号从 1.0 修改为 2.0
         settings_path.write_text(settings_text)
     - name: create my_app v2.0 bundle using pyinstaller
-      run: pyinstaller "main.spec" --clean -y --distpath "temp_my_app/dist" --workpath "temp_my_app/build"
+      run: pyinstaller "main.spec" --clean -y --distpath "temp_my_app/dist" --workpath "temp_my_app/build"  # 创建 my_app v2.0 捆绑包
     - name: add my_app v2.0 to tufup repository
       run: python repo_add_bundle.py
     - name: run update server and update my_app from v1 to v2
