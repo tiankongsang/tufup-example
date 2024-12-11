@@ -126,7 +126,7 @@ if ($enable_patch_update) {
 # 模拟开发 my_app v2.0（修改源代码版本号）
 Write-Host "将 $app_name 版本临时提升至 v2.0" -ForegroundColor green
 $settings_path = "$repo_dir\src\myapp\settings.py"
-(Get-Content $settings_path).Replace("1.0", "2.0") | Set-Content $settings_path
+(Get-Content -Path $settings_path -Encoding UTF8).Replace("1.0", "2.0") | Set-Content -Path $settings_path -Encoding UTF8
 
 # 使用 PyInstaller 创建 my_app v2.0 版本
 Write-Host "创建 $app_name v2.0 版本的捆绑包" -ForegroundColor green
@@ -139,7 +139,7 @@ Assert-ExeSuccess
 
 # 回滚源代码的临时修改
 Write-Host "回滚源代码的临时修改" -ForegroundColor green
-(Get-Content $settings_path).Replace("2.0", "1.0") | Set-Content $settings_path
+(Get-Content -Path $settings_path -Encoding UTF8).Replace("2.0", "1.0") | Set-Content -Path $settings_path -Encoding UTF8
 
 # 启动更新服务器
 Write-Host "启动更新服务器" -ForegroundColor green
