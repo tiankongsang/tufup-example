@@ -1,43 +1,43 @@
-# DISCLAIMER:
-# ±¾½Å±¾»á×Ô¶¯ÔÚÄúµÄÏµÍ³ÖĞ´´½¨ÓëÊ¾Àı "my_app" Ïà¹ØµÄÎÄ¼ş£¬²¢ÔÚÖ®ºóÉ¾³ıËüÃÇ¡£É¾³ıÇ°»áÇëÇóÈ·ÈÏ¡£
-# Ê¹ÓÃ·çÏÕÓÉÓÃ»§³Ğµ£¡£
+ï»¿# DISCLAIMER:
+# æœ¬è„šæœ¬ä¼šè‡ªåŠ¨åœ¨æ‚¨çš„ç³»ç»Ÿä¸­åˆ›å»ºä¸ç¤ºä¾‹ "my_app" ç›¸å…³çš„æ–‡ä»¶ï¼Œå¹¶åœ¨ä¹‹ååˆ é™¤å®ƒä»¬ã€‚åˆ é™¤å‰ä¼šè¯·æ±‚ç¡®è®¤ã€‚
+# ä½¿ç”¨é£é™©ç”±ç”¨æˆ·æ‰¿æ‹…ã€‚
 #
-# ±¾½Å±¾Ö´ĞĞ README ÖĞµÄ²½Öè£¬º­¸Ç²Ö¿â¶ËºÍ¿Í»§¶ËµÄ²Ù×÷¡£
-# Æä¹¦ÄÜÓë GitHub workflow ÖĞµÄ test-update-cycle.yml »ù±¾ÏàÍ¬£¬Ö»²»¹ıÕâÊÇÔÚ±¾µØ¿ª·¢»·¾³ÖĞÊÖ¶¯²âÊÔ¸ü·½±ã¡£
+# æœ¬è„šæœ¬æ‰§è¡Œ README ä¸­çš„æ­¥éª¤ï¼Œæ¶µç›–ä»“åº“ç«¯å’Œå®¢æˆ·ç«¯çš„æ“ä½œã€‚
+# å…¶åŠŸèƒ½ä¸ GitHub workflow ä¸­çš„ test-update-cycle.yml åŸºæœ¬ç›¸åŒï¼Œåªä¸è¿‡è¿™æ˜¯åœ¨æœ¬åœ°å¼€å‘ç¯å¢ƒä¸­æ‰‹åŠ¨æµ‹è¯•æ›´æ–¹ä¾¿ã€‚
 #
-# - ³õÊ¼»¯Ò»¸öĞÂµÄÊ¾Àı²Ö¿âµ½ .\temp_my_app Ä¿Â¼£¨°üº¬ĞéÄâÃÜÔ¿¿â£©
-# - Ê¹ÓÃ pyinstaller ´´½¨ my_app v1.0 °æ±¾µÄÀ¦°ó°ü
-# - ½« my_app v1.0 Ìí¼Óµ½ tufup ²Ö¿â
-# - ÔÚ <localappdata>\Programs\my_app °²×° my_app v1.0£¬Êı¾İ´æ´¢ÔÚ <localappdata>\my_app
-# - Ä£Äâ¿ª·¢ my_app v2.0
-# - Ê¹ÓÃ pyinstaller ´´½¨ my_app v2.0 °æ±¾µÄÀ¦°ó°ü
-# - ½« my_app v2.0 Ìí¼Óµ½ tufup ²Ö¿â
-# - Æô¶¯¸üĞÂ·şÎñÆ÷£¬²¢½« my_app ´Ó v1 ¸üĞÂµ½ v2
+# - åˆå§‹åŒ–ä¸€ä¸ªæ–°çš„ç¤ºä¾‹ä»“åº“åˆ° .\temp_my_app ç›®å½•ï¼ˆåŒ…å«è™šæ‹Ÿå¯†é’¥åº“ï¼‰
+# - ä½¿ç”¨ pyinstaller åˆ›å»º my_app v1.0 ç‰ˆæœ¬çš„æ†ç»‘åŒ…
+# - å°† my_app v1.0 æ·»åŠ åˆ° tufup ä»“åº“
+# - åœ¨ <localappdata>\Programs\my_app å®‰è£… my_app v1.0ï¼Œæ•°æ®å­˜å‚¨åœ¨ <localappdata>\my_app
+# - æ¨¡æ‹Ÿå¼€å‘ my_app v2.0
+# - ä½¿ç”¨ pyinstaller åˆ›å»º my_app v2.0 ç‰ˆæœ¬çš„æ†ç»‘åŒ…
+# - å°† my_app v2.0 æ·»åŠ åˆ° tufup ä»“åº“
+# - å¯åŠ¨æ›´æ–°æœåŠ¡å™¨ï¼Œå¹¶å°† my_app ä» v1 æ›´æ–°åˆ° v2
 #
-# Èç¹û½Å±¾ÎŞ·¨Ö´ĞĞ£¬ÔËĞĞÒÔÏÂÃüÁî£º
+# å¦‚æœè„šæœ¬æ— æ³•æ‰§è¡Œï¼Œè¿è¡Œä»¥ä¸‹å‘½ä»¤ï¼š
 #   `Set-ExecutionPolicy AllSigned`
-# ²Î¿¼: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts
+# å‚è€ƒ: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts
 #
-# ĞèÒª×¢ÒâµÄÊÇ£¬ÎÒÃÇ¿ÉÒÔÖ±½ÓÔÚ GitHub workflow ÖĞÔËĞĞ´Ë½Å±¾£¬µ«½«¹¤×÷Á÷²ğ·Ö³É¶ÀÁ¢²½Öè±ãÓÚµ÷ÊÔÊ§°Ü¡£
+# éœ€è¦æ³¨æ„çš„æ˜¯ï¼Œæˆ‘ä»¬å¯ä»¥ç›´æ¥åœ¨ GitHub workflow ä¸­è¿è¡Œæ­¤è„šæœ¬ï¼Œä½†å°†å·¥ä½œæµæ‹†åˆ†æˆç‹¬ç«‹æ­¥éª¤ä¾¿äºè°ƒè¯•å¤±è´¥ã€‚
 
 
-# Èç¹ûÃüÁîĞĞÓĞ´íÎó£¬Á¢¼´ÍË³ö
+# å¦‚æœå‘½ä»¤è¡Œæœ‰é”™è¯¯ï¼Œç«‹å³é€€å‡º
 $ErrorActionPreference = "stop"
 
-# ¿ÉÖ´ĞĞÎÄ¼ş³ö´íÊ±ÍË³ö£¨ÓÃÓÚ¿ÉÖ´ĞĞÎÄ¼şµ÷ÓÃÖ®ºó£©
+# å¯æ‰§è¡Œæ–‡ä»¶å‡ºé”™æ—¶é€€å‡ºï¼ˆç”¨äºå¯æ‰§è¡Œæ–‡ä»¶è°ƒç”¨ä¹‹åï¼‰
 function Assert-ExeSuccess {
     if (!$?) {
-        # $? °üº¬ÉÏ´ÎÃüÁîµÄÖ´ĞĞ×´Ì¬£¨³É¹¦ÔòÎª true£©
+        # $? åŒ…å«ä¸Šæ¬¡å‘½ä»¤çš„æ‰§è¡ŒçŠ¶æ€ï¼ˆæˆåŠŸåˆ™ä¸º trueï¼‰
         Write-Error "failed"
     }
 }
 
 
-# ±äÁ¿
+# å˜é‡
 $app_name = "my_app"
 $enable_patch_update = $true
 
-# ±¾½Å±¾´´½¨²¢É¾³ıµÄÄ¿Â¼£¨×¢Òâ±ØĞëÒÔ $app_name ½áÎ²£¬ÇÒÓë myapp.settings ºÍ repo_settings ±£³ÖÒ»ÖÂ£©
+# æœ¬è„šæœ¬åˆ›å»ºå¹¶åˆ é™¤çš„ç›®å½•ï¼ˆæ³¨æ„å¿…é¡»ä»¥ $app_name ç»“å°¾ï¼Œä¸”ä¸ myapp.settings å’Œ repo_settings ä¿æŒä¸€è‡´ï¼‰
 $repo_dir = $PSScriptRoot
 $temp_dir = "$repo_dir\temp_$app_name"
 $app_install_dir = "$env:LOCALAPPDATA\Programs\$app_name"
@@ -45,146 +45,146 @@ $app_data_dir = "$env:LOCALAPPDATA\$app_name"
 $targets_dir = "$app_data_dir\update_cache\targets"
 $all_app_dirs = @($temp_dir, $app_install_dir, $app_data_dir)
 
-# É¾³ı *my_app Ä¿Â¼£¬ĞèÒªÈ·ÈÏ
+# åˆ é™¤ *my_app ç›®å½•ï¼Œéœ€è¦ç¡®è®¤
 function Remove-MyAppDirectory {
     param($Path)
     if ( $Path -match "$app_name$" ) {
         if (Test-Path $Path) {
-            # µİ¹éÉ¾³ı¸ÃÄ¿Â¼£¬²¢ÇëÇóÈ·ÈÏ
+            # é€’å½’åˆ é™¤è¯¥ç›®å½•ï¼Œå¹¶è¯·æ±‚ç¡®è®¤
             Remove-Item $Path -Recurse -Confirm
         } else {
-            Write-Host "Â·¾¶²»´æÔÚ: $Path" -ForegroundColor yellow
+            Write-Host "è·¯å¾„ä¸å­˜åœ¨: $Path" -ForegroundColor yellow
         }
     } else {
-        Write-Host "$app_name Î´°üº¬ÔÚÂ·¾¶ÖĞ: $Path" -ForegroundColor yellow
+        Write-Host "$app_name æœªåŒ…å«åœ¨è·¯å¾„ä¸­: $Path" -ForegroundColor yellow
     }
 }
 
-# É¾³ı my_app Ïà¹ØµÄËùÓĞÄ¿Â¼
+# åˆ é™¤ my_app ç›¸å…³çš„æ‰€æœ‰ç›®å½•
 function Remove-MyApp {
     $all_app_dirs | ForEach-Object { Remove-MyAppDirectory $_ }
 }
 
 
-# µ÷ÓÃ PyInstaller ´´½¨Ó¦ÓÃ³ÌĞò°ü
+# è°ƒç”¨ PyInstaller åˆ›å»ºåº”ç”¨ç¨‹åºåŒ…
 function Invoke-PyInstaller {
     pyinstaller.exe "$repo_dir\main.spec" --clean -y --distpath "$temp_dir\dist" --workpath "$temp_dir\build"
     Assert-ExeSuccess
 }
 
 
-# É¾³ıËùÓĞ²ĞÁôÄ¿Â¼ºÍÎÄ¼ş
+# åˆ é™¤æ‰€æœ‰æ®‹ç•™ç›®å½•å’Œæ–‡ä»¶
 Remove-MyApp
 
-# Èç¹ûÄ¿Â¼²»´æÔÚ£¬Ôò´´½¨ĞÂÄ¿Â¼
+# å¦‚æœç›®å½•ä¸å­˜åœ¨ï¼Œåˆ™åˆ›å»ºæ–°ç›®å½•
 $all_app_dirs | ForEach-Object {
     if (!(Test-Path $_)) {
         New-Item -Path $_ -ItemType "directory" | Out-Null
-        Write-Host "´´½¨Ä¿Â¼: $_" -ForegroundColor green
+        Write-Host "åˆ›å»ºç›®å½•: $_" -ForegroundColor green
     }
 }
 New-Item -Path $targets_dir -ItemType "directory" -Force | Out-Null
 
-# ±¾½Å±¾ĞèÒªÒ»¸öÒÑ¼¤»îµÄ Python »·¾³£¬²¢ÇÒÒÑ°²×° tufup£¨¼ÙÉèÔÚ repo_dir ÖĞÓĞÒ»¸öĞéÄâ»·¾³£©
+# æœ¬è„šæœ¬éœ€è¦ä¸€ä¸ªå·²æ¿€æ´»çš„ Python ç¯å¢ƒï¼Œå¹¶ä¸”å·²å®‰è£… tufupï¼ˆå‡è®¾åœ¨ repo_dir ä¸­æœ‰ä¸€ä¸ªè™šæ‹Ÿç¯å¢ƒï¼‰
 $venv_path = "$repo_dir\venv\Scripts\activate.ps1"
 if (Test-Path $venv_path) {
     & $venv_path
-    Write-Host "ĞéÄâ»·¾³ÒÑ¼¤»î" -ForegroundColor green
+    Write-Host "è™šæ‹Ÿç¯å¢ƒå·²æ¿€æ´»" -ForegroundColor green
 } else {
-    Write-Host "Î´ÕÒµ½ĞéÄâ»·¾³" -ForegroundColor red
+    Write-Host "æœªæ‰¾åˆ°è™šæ‹Ÿç¯å¢ƒ" -ForegroundColor red
 }
 
-# È·±£ Python ¿ÉÒÔÕÒµ½ myapp
+# ç¡®ä¿ Python å¯ä»¥æ‰¾åˆ° myapp
 $Env:PYTHONPATH += ";$repo_dir\src"
 
-# ³õÊ¼»¯ĞÂ²Ö¿â
-Write-Host "Îª $app_name ³õÊ¼»¯ TUF ²Ö¿â" -ForegroundColor green
+# åˆå§‹åŒ–æ–°ä»“åº“
+Write-Host "ä¸º $app_name åˆå§‹åŒ– TUF ä»“åº“" -ForegroundColor green
 python "$repo_dir\repo_init.py"
 Assert-ExeSuccess
 
-# Ê¹ÓÃ PyInstaller ´´½¨ my_app v1.0 °æ±¾
-Write-Host "´´½¨ $app_name v1.0 °æ±¾µÄÀ¦°ó°ü" -ForegroundColor green
+# ä½¿ç”¨ PyInstaller åˆ›å»º my_app v1.0 ç‰ˆæœ¬
+Write-Host "åˆ›å»º $app_name v1.0 ç‰ˆæœ¬çš„æ†ç»‘åŒ…" -ForegroundColor green
 Invoke-PyInstaller
 
-# ½« my_app v1.0 Ìí¼Óµ½ tufup ²Ö¿â
-Write-Host "½« $app_name v1.0 Ìí¼Óµ½²Ö¿â" -ForegroundColor green
+# å°† my_app v1.0 æ·»åŠ åˆ° tufup ä»“åº“
+Write-Host "å°† $app_name v1.0 æ·»åŠ åˆ°ä»“åº“" -ForegroundColor green
 python "$repo_dir\repo_add_bundle.py"
 Assert-ExeSuccess
 
 
-# Ä£Äâ°²×° my_app v1.0
-Write-Host "ÔÚ $app_install_dir °²×° $app_name v1.0" -ForegroundColor green
+# æ¨¡æ‹Ÿå®‰è£… my_app v1.0
+Write-Host "åœ¨ $app_install_dir å®‰è£… $app_name v1.0" -ForegroundColor green
 $myapp_v1_archive = "$temp_dir\repository\targets\$app_name-1.0.tar.gz"
 tar -xf $myapp_v1_archive --directory=$app_install_dir
 
-# ÎªÆôÓÃ²¹¶¡¸üĞÂ£¬½«´æµµ¸´ÖÆµ½Ä¿±êÄ¿Â¼
+# ä¸ºå¯ç”¨è¡¥ä¸æ›´æ–°ï¼Œå°†å­˜æ¡£å¤åˆ¶åˆ°ç›®æ ‡ç›®å½•
 if ($enable_patch_update) {
-    Write-Host "ÆôÓÃ²¹¶¡¸üĞÂ" -ForegroundColor green
+    Write-Host "å¯ç”¨è¡¥ä¸æ›´æ–°" -ForegroundColor green
     Copy-Item $myapp_v1_archive -Destination $targets_dir
 }
 
-# Ä£Äâ¿ª·¢ my_app v2.0£¨ĞŞ¸ÄÔ´´úÂë°æ±¾ºÅ£©
-Write-Host "½« $app_name °æ±¾ÁÙÊ±ÌáÉıÖÁ v2.0" -ForegroundColor green
+# æ¨¡æ‹Ÿå¼€å‘ my_app v2.0ï¼ˆä¿®æ”¹æºä»£ç ç‰ˆæœ¬å·ï¼‰
+Write-Host "å°† $app_name ç‰ˆæœ¬ä¸´æ—¶æå‡è‡³ v2.0" -ForegroundColor green
 $settings_path = "$repo_dir\src\myapp\settings.py"
 (Get-Content $settings_path).Replace("1.0", "2.0") | Set-Content $settings_path
 
-# Ê¹ÓÃ PyInstaller ´´½¨ my_app v2.0 °æ±¾
-Write-Host "´´½¨ $app_name v2.0 °æ±¾µÄÀ¦°ó°ü" -ForegroundColor green
+# ä½¿ç”¨ PyInstaller åˆ›å»º my_app v2.0 ç‰ˆæœ¬
+Write-Host "åˆ›å»º $app_name v2.0 ç‰ˆæœ¬çš„æ†ç»‘åŒ…" -ForegroundColor green
 Invoke-PyInstaller
 
-# ½« my_app v2.0 Ìí¼Óµ½ tufup ²Ö¿â
-Write-Host "½« $app_name v2.0 Ìí¼Óµ½²Ö¿â" -ForegroundColor green
+# å°† my_app v2.0 æ·»åŠ åˆ° tufup ä»“åº“
+Write-Host "å°† $app_name v2.0 æ·»åŠ åˆ°ä»“åº“" -ForegroundColor green
 python "$repo_dir\repo_add_bundle.py"
 Assert-ExeSuccess
 
-# »Ø¹öÔ´´úÂëµÄÁÙÊ±ĞŞ¸Ä
-Write-Host "»Ø¹öÔ´´úÂëµÄÁÙÊ±ĞŞ¸Ä" -ForegroundColor green
+# å›æ»šæºä»£ç çš„ä¸´æ—¶ä¿®æ”¹
+Write-Host "å›æ»šæºä»£ç çš„ä¸´æ—¶ä¿®æ”¹" -ForegroundColor green
 (Get-Content $settings_path).Replace("2.0", "1.0") | Set-Content $settings_path
 
-# Æô¶¯¸üĞÂ·şÎñÆ÷
-Write-Host "Æô¶¯¸üĞÂ·şÎñÆ÷" -ForegroundColor green
+# å¯åŠ¨æ›´æ–°æœåŠ¡å™¨
+Write-Host "å¯åŠ¨æ›´æ–°æœåŠ¡å™¨" -ForegroundColor green
 $job = Start-Job -ArgumentList @("$temp_dir\repository") -ScriptBlock {
     param($repository_path)
     python -m http.server -d $repository_path
     Assert-ExeSuccess
 }
-sleep 1  # ÉÔ×÷µÈ´ı£¬ÒÔÈ·±£·şÎñÆ÷Æô¶¯³É¹¦
+sleep 1  # ç¨ä½œç­‰å¾…ï¼Œä»¥ç¡®ä¿æœåŠ¡å™¨å¯åŠ¨æˆåŠŸ
 
-# ÔËĞĞ my_app Ö´ĞĞ¸üĞÂ£¨´Ó v1 ¸üĞÂµ½ v2£©
-Write-Host "ÔËĞĞ $app_name ÒÔ½øĞĞ¸üĞÂ..." -ForegroundColor green
+# è¿è¡Œ my_app æ‰§è¡Œæ›´æ–°ï¼ˆä» v1 æ›´æ–°åˆ° v2ï¼‰
+Write-Host "è¿è¡Œ $app_name ä»¥è¿›è¡Œæ›´æ–°..." -ForegroundColor green
 & "$app_install_dir\main.exe"
 Assert-ExeSuccess
 
-# ÔÙ´ÎÔËĞĞ my_app È·ÈÏÒÑ¸üĞÂµ½ v2.0
-Write-Host "¸üĞÂÍê³Éºó°´»Ø³µ¼ü¼ÌĞø:"  -ForegroundColor yellow -NoNewLine
-Read-Host  # ²»ÏÔÊ¾ÊäÈëÄÚÈİ
-Write-Host "ÔÙ´ÎÔËĞĞ $app_name ÒÔÈ·ÈÏ°æ±¾" -ForegroundColor green
+# å†æ¬¡è¿è¡Œ my_app ç¡®è®¤å·²æ›´æ–°åˆ° v2.0
+Write-Host "æ›´æ–°å®ŒæˆåæŒ‰å›è½¦é”®ç»§ç»­:"  -ForegroundColor yellow -NoNewLine
+Read-Host  # ä¸æ˜¾ç¤ºè¾“å…¥å†…å®¹
+Write-Host "å†æ¬¡è¿è¡Œ $app_name ä»¥ç¡®è®¤ç‰ˆæœ¬" -ForegroundColor green
 $output = & "$app_install_dir\main.exe"
 Assert-ExeSuccess
 
-# Í£Ö¹¸üĞÂ·şÎñÆ÷
-Write-Host "Í£Ö¹·şÎñÆ÷" -ForegroundColor green
+# åœæ­¢æ›´æ–°æœåŠ¡å™¨
+Write-Host "åœæ­¢æœåŠ¡å™¨" -ForegroundColor green
 $job | Stop-Job
 
-# ²âÊÔÊä³ö½á¹û
+# æµ‹è¯•è¾“å‡ºç»“æœ
 $pattern = "$app_name 2.0"
 if ( $output -match $pattern ) {
-  Write-Host "`n³É¹¦: ÕÒµ½ $pattern" -ForegroundColor green
+  Write-Host "`næˆåŠŸ: æ‰¾åˆ° $pattern" -ForegroundColor green
 } else {
-  Write-Host "`nÊ§°Ü: Î´ÕÒµ½ $pattern£¬Êä³öÎª:`n$output" -ForegroundColor red
+  Write-Host "`nå¤±è´¥: æœªæ‰¾åˆ° $patternï¼Œè¾“å‡ºä¸º:`n$output" -ForegroundColor red
   exit 1
 }
 
-# ÌáĞÑÓÃ»§ÇåÀí²ĞÁôÎÄ¼ş
+# æé†’ç”¨æˆ·æ¸…ç†æ®‹ç•™æ–‡ä»¶
 $remaining = 0
 $all_app_dirs | ForEach-Object {
     if (Test-Path $_) {
-        Write-Host "$app_name µÄÎÄ¼ş²ĞÁôÔÚ: $_" -ForegroundColor yellow
+        Write-Host "$app_name çš„æ–‡ä»¶æ®‹ç•™åœ¨: $_" -ForegroundColor yellow
         $remaining += 1
     }
 }
 if ($remaining) {
-    Write-Host "ÊÇ·ñÒªÉ¾³ıÕâĞ©Ä¿Â¼?" -ForegroundColor yellow
+    Write-Host "æ˜¯å¦è¦åˆ é™¤è¿™äº›ç›®å½•?" -ForegroundColor yellow
     if ((Read-Host "[y]/n") -in "", "y") {
         Remove-MyApp
     }
