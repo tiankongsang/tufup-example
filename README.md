@@ -1,8 +1,8 @@
-# Tufup (TUF-updater) example application 
+# Tufup (TUF-updater) example application
 
 This repository shows how to use the [tufup][1] package for automated application updates.
 
-This is done by means of a dummy Windows-application, called `myapp`, that uses `tufup` in combination with `pyinstaller`. 
+This is done by means of a dummy Windows-application, called `myapp`, that uses `tufup` in combination with `pyinstaller`.
 
 NOTE: Although the example `myapp` is bundled using `pyinstaller`, this is not required: `tufup` is completely independent of `pyinstaller`, and can be used with *any* bundle of files.
 
@@ -33,12 +33,12 @@ The dummy application is bundled using [PyInstaller][3], but `tufup` works with 
 The example includes a basic PyInstaller `.spec` file that ensures the `tufup` root metadata file (`root.json`) is included in the application bundle.
 
 The dummy *application* specifies where all `tufup`-related  files will be stored.
-This is illustrated in `settings.py`. 
+This is illustrated in `settings.py`.
 
 The following basic steps are covered:
 
 1. initialize a repository
-2. initial release   
+2. initial release
    1. build the application, including trusted root metadata from the repository
    2. create an archive for the application and register it in the repo
 3. second release
@@ -55,8 +55,8 @@ A detailed description of the steps, both for the repository-side and for the cl
 
 Some example scripts are provided for initializing a tufup repository and for adding new versions, see `repo_*.py`.
 
-Alternatively, `tufup` offers a command line interface (CLI) for repository actions. 
-Type `tufup -h` on the command line for more information. 
+Alternatively, `tufup` offers a command line interface (CLI) for repository actions.
+Type `tufup -h` on the command line for more information.
 
 Here's how to set up the example tufup repository, starting from a clean repo, i.e. no `temp_my_app` dir is present in the repo root (as defined by `DEV_DIR` in `settings.py`):
 
@@ -97,14 +97,16 @@ That's it for the repo-side.
 
 On the same system (for convenience):
 
-1. To simulate the initial installation on a client device, we do a manual extraction of the archive version 1.0 from the `repository/targets` dir into the `INSTALL_DIR`, specified in `myapp/settings.py`. 
+1. To simulate the initial installation on a client device, we do a manual extraction of the archive version 1.0 from the `repository/targets` dir into the `INSTALL_DIR`, specified in `myapp/settings.py`.
 
-   #### On Windows:
-   In the default example the `INSTALL_DIR` would be the `C:\users\<username>\AppData\Local\Programs\my_app` directory. 
+   #### On Windows
+
+   In the default example the `INSTALL_DIR` would be the `C:\users\<username>\AppData\Local\Programs\my_app` directory.
    You can use `tar -xf my_app-1.0.tar.gz` in PowerShell to extract the bundle.
 
-   #### On macOS:
-   To install the bundle on macOS to the default location, you can use 
+   #### On macOS
+
+   To install the bundle on macOS to the default location, you can use
    `mkdir -p ~/Applications/my_app && tar -xf temp_my_app/repository/targets/my_app-1.0.tar.gz -C ~/Applications/my_app`.
 
 2. [optional] To try a patch update, copy the archive version 1.0 into the `TARGET_DIR` (this would normally be done by an installer).
@@ -112,7 +114,7 @@ On the same system (for convenience):
 4. Metadata and targets are stored in the `UPDATE_CACHE_DIR`.
 
 BEWARE: The steps above refer to the `INSTALL_DIR` for the `FROZEN` state, typically `C:\users\<username>\AppData\Local\Programs\my_app` on Windows.
-In development, when running the `myapp` example directly from source, i.e. `FROZEN=False`, the `INSTALL_DIR` is different from the actual install dir that would be used in production. See details in [settings.py][4]. 
+In development, when running the `myapp` example directly from source, i.e. `FROZEN=False`, the `INSTALL_DIR` is different from the actual install dir that would be used in production. See details in [settings.py][4].
 
 ### Troubleshooting
 
